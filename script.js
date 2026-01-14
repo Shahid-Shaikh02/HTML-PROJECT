@@ -1,5 +1,4 @@
-<script>
-        // Game Data Structure - ADD YOUR GAMES HERE
+// Game Data Structure - ADD YOUR GAMES HERE
         const gamesData = {
             featured: [
                 {
@@ -128,4 +127,3 @@
 
         // Initialize on page load
         window.addEventListener('load', initializeGames);
-    </script>
