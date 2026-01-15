@@ -47,7 +47,7 @@ async function loadAllGames() {
             throw new Error(`HTTP ${response.status}`);
           }
           
-          const gameData = await response.json();
+          const gameData = await response.json(); //OVERWRITES above!
           
           // ========== FIX PATHS ==========
           // Remove leading ./ from paths, then add full prefix

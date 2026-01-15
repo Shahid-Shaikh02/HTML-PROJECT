@@ -1,3 +1,9 @@
+        @media (max-width: 768px) {
+            .search-bar input {
+                font-size: 16px; /* Prevents zoom on mobile */
+            }
+        }
+        
         /* style css file */
         * {
             margin: 0;
