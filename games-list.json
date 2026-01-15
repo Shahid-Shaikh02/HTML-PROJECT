@@ -1,0 +1,12 @@
+{
+  "categories": {
+    "web-game": [
+      "ball-escapes-a-circular-trap",
+      "snake",
+      "pong"
+    ],
+    "unity": [
+      "my-unity-game"
+    ]
+  }
+}
