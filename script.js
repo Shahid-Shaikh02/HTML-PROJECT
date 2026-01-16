@@ -17,7 +17,6 @@ if (!container) {
 // Detect GitHub Pages subdirectory
 const isGitHubPages = window.location.hostname.includes('github.io');
 const basePath = isGitHubPages ? '/shodan-games/' : './';
-
 console.log(`Using base path: ${basePath}`);
 
 // ============================================
@@ -37,9 +36,9 @@ async function loadAllGames() {
       console.error('Invalid JSON in games-list.json:', err);
       throw new Error('games-list.json is corrupted');
     });
-
+    
     console.log('Games list loaded:', gamesList);
-
+    
     // Loop through categories
     for (const category in gamesList.categories) {
       const gameFolders = gamesList.categories[category];
@@ -60,7 +59,7 @@ async function loadAllGames() {
           const gameData = await response.json();
           
           // ========== FIX PATHS ==========
-          const removeLeadingDot = (path) => path.replace(/^\.\//, '');
+          const removeLeadingDot = (path) => path.replace(/^\.\\/, '');
           
           gameData.thumbnail = `${basePath}games/${folder}/${removeLeadingDot(gameData.thumbnail)}`;
           gameData.video = `${basePath}games/${folder}/${removeLeadingDot(gameData.video)}`;
@@ -74,19 +73,18 @@ async function loadAllGames() {
           } else if (gameData.type === 'external') {
             gamesData.unity.push(gameData);
           }
-
+          
           // Then also add to featured if marked
           if (gameData.badge === 'hot' || gameData.featured === true) {
             gamesData.featured.push(gameData);
           }
-
           
         } catch (error) {
           console.warn(`❌ Could not load game: ${gameFolderName}`, error.message);
         }
       }
     }
-
+    
     console.log('Final gamesData:', gamesData);
     initializeGames();
     
@@ -102,14 +100,13 @@ function initializeGames() {
   const hasFeatured = gamesData.featured && gamesData.featured.length > 0;
   const hasHTML = gamesData.html && gamesData.html.length > 0;
   const hasUnity = gamesData.unity && gamesData.unity.length > 0;
-
+  
   console.log(`Featured: ${hasFeatured}, HTML: ${hasHTML}, Unity: ${hasUnity}`);
-
+  
   // Render Featured Games
   if (hasFeatured) {
     renderGames(gamesData.featured, 'gameGridFeatured');
   } else {
-    // Hide both the title and the grid
     const featuredGrid = document.getElementById('gameGridFeatured');
     const featuredTitle = featuredGrid?.previousElementSibling;
     if (featuredGrid) {
@@ -119,7 +116,7 @@ function initializeGames() {
       }
     }
   }
-
+  
   // Render HTML Games
   if (hasHTML) {
     renderGames(gamesData.html, 'gameGridHTML');
@@ -129,7 +126,7 @@ function initializeGames() {
       htmlSection.parentElement.style.display = 'none';
     }
   }
-
+  
   // Render Unity Games
   if (hasUnity) {
     renderGames(gamesData.unity, 'gameGridUnity');
@@ -139,7 +136,7 @@ function initializeGames() {
       unitySection.parentElement.style.display = 'none';
     }
   }
-
+  
   // Show empty state if no games
   if (!hasFeatured && !hasHTML && !hasUnity) {
     container.innerHTML = `
@@ -162,11 +159,11 @@ function renderGames(games, gridId) {
   }
   
   grid.innerHTML = '';
-
   games.forEach(game => {
     const gameCard = document.createElement('div');
     gameCard.className = 'game-card';
-
+    gameCard.style.cursor = 'pointer';
+    
     gameCard.innerHTML = `
       <div class="game-card-media">
         <img src="${game.thumbnail}" alt="${game.title}" class="game-card-image" loading="lazy" />
@@ -178,11 +175,13 @@ function renderGames(games, gridId) {
           <div>
             ${game.badge ? `<span class="game-badge ${game.badge}">${game.badge.toUpperCase()}</span>` : ''}
           </div>
-          <button class="play-btn" onclick="playGame('${game.link}', '${game.type}')">Play</button>
         </div>
       </div>
     `;
-
+    
+    // Make entire card clickable
+    gameCard.addEventListener('click', () => playGame(game.link, game.type));
+    
     // Video preview on hover
     const video = gameCard.querySelector('.game-card-video');
     gameCard.addEventListener('mouseenter', () => {
@@ -190,12 +189,11 @@ function renderGames(games, gridId) {
         video.play().catch(err => console.warn('Video autoplay blocked:', err));
       }
     });
-
     gameCard.addEventListener('mouseleave', () => {
       video.pause();
       video.currentTime = 0;
     });
-
+    
     grid.appendChild(gameCard);
   });
 }
@@ -228,7 +226,6 @@ if (searchInput) {
   searchInput.addEventListener('input', function(e) {
     const searchTerm = e.target.value.toLowerCase();
     const allCards = document.querySelectorAll('.game-card');
-
     allCards.forEach(card => {
       const title = card.querySelector('.game-title').textContent.toLowerCase();
       card.style.display = title.includes(searchTerm) ? '' : 'none';
