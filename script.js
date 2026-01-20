@@ -233,7 +233,7 @@ function playGame(link, type) {
   } catch (error) {
     console.error('Error playing game:', error);
   }
-},
+}
 
 // ============================================
 // SEARCH FUNCTIONALITY
