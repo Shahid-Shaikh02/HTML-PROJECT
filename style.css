@@ -109,7 +109,7 @@
         }
 
         .game-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px) scale(1.05);
             box-shadow: 0 8px 30px rgba(0, 212, 255, 0.3);
         }
 

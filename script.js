@@ -197,24 +197,6 @@ function renderGames(games, gridId) {
     grid.appendChild(gameCard);
   });
 
-//   const video = gameCard.querySelector('.game-card-video');
-
-// gameCard.addEventListener('mouseenter', () => {
-//   if (video && game.video) {
-//     video.style.display = 'block';      // optional: show video over thumb
-//     video.play().catch(err => console.warn('Video autoplay blocked:', err));
-//   }
-// });
-
-// gameCard.addEventListener('mouseleave', () => {
-//   if (video) {
-//     video.pause();
-//     video.currentTime = 0;
-//     video.style.display = '';          // optional: hide again
-//   }
-// });
-// },
-
 // ============================================
 // HANDLE GAME PLAY
 // ============================================
@@ -226,7 +208,7 @@ function playGame(link, type) {
       window.location.href = gameLink;
     } else if (type === 'external') {
       // Open external game in new tab
-      window.open(link, '_blank');
+      window.location.href = link;
     } else {
       console.warn('Unknown game type:', type);
     }
