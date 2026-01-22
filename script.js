@@ -194,8 +194,11 @@ function setupVideoHandlers(containerEl) {
 }
 
 function playGame(url, title) {
-    // Open in new tab
-    window.open(url, '_blank');
+    // Option 1: Open in a NEW tab (Recommended)
+    // window.open(url, '_blank');
+
+    // Option 2: Open in the SAME tab (Delete the line above and uncomment this one if you prefer)
+    window.location.href = url;
     
     if (CONFIG.enableAnalytics && typeof gtag !== 'undefined') {
         gtag('event', 'play_game', { 'game_title': title, 'game_url': url });
